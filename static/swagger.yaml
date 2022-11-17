@@ -1,17 +1,10 @@
 openapi: 3.0.3
 info:
   title: Token2go
-  description: |-
-    This is the Token2go server based on the OpenAPI 3.0 specification.
-  contact:
-    email: apiteam@swagger.io
   license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.11
-externalDocs:
-  description: Find out more about Token2go
-  url: https://github.com/trallnag/token2go-server
+    name: MIT License
+    url: https://github.com/trallnag/token2go-server/blob/trunk/LICENSE
+  version: 1.0.0
 tags:
   - name: Core
   - name: Flows
@@ -72,7 +65,14 @@ paths:
 
         **Usecase**
 
-        Token2go client wants to get a token. The client opens this endpoint in the user's browser. Among other input, a public key is provided with the URL as part of the query parameters. The server generates a key and encrypts it with the provided public certificate. The key is used to encrypt token data. Encrypted key and data are encoded into query parameters and added to the provided redirect URL. Finally, the user is redirected. Probably to a server hosted on localhost by the Token2go client.
+        Token2go client wants to get a token. The client opens this endpoint in
+        the user's browser. Among other input, a public key is provided with the
+        URL as part of the query parameters. The server generates a key and
+        encrypts it with the provided public certificate. The key is used to
+        encrypt token data. Encrypted key and data are encoded into query
+        parameters and added to the provided redirect URL. Finally, the
+        user is redirected. Probably to a server hosted on localhost by the
+        Token2go client.
 
         **Flow**
 
@@ -177,7 +177,8 @@ paths:
       responses:
         "301":
           description: |
-            Successful operation. Data contained within URL query parameters `state`, `key`, `nonce`, and `payload`.
+            Successful operation. Data contained within URL query
+            parameters `state`, `key`, `nonce`, and `payload`.
 
             - `state`: Arbitrary data taken directly from the corresponding
               URL parameter of the request.
@@ -185,11 +186,13 @@ paths:
               `payload`. Key itself has been encrypted with RSA using
               the provided public key. Key is only useful combined with `nonce`
               and following AES-GCM during payload decryption.
-            - `nonce`: Base64 encoded random data that has been encrypted together with the
-              token data into the payload using AES-GCM. Must be used together `key` during payload decryption.
-            - `payload`: Base64 encoded symmetrically encrypted payload. AES-GCM is used for
-              encryption. `key` and `nonce` are required for decryption.
-              Decrypted payload structure matches the JSON encoded `Token` component below.
+            - `nonce`: Base64 encoded random data that has been encrypted
+              together with the token data into the payload using AES-GCM.
+              Must be used together `key` during payload decryption.
+            - `payload`: Base64 encoded symmetrically encrypted payload.
+              AES-GCM is used for encryption. `key` and `nonce` are required
+              for decryption. Decrypted payload structure matches the JSON
+              encoded `Token` component below.
 
             The decrypted payload is JSON encoded and has the following fields:
 

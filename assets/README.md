@@ -1,4 +1,6 @@
-# Favicon
+# Assets
+
+## Favicon
 
 Created with Inkscape.
 
@@ -13,3 +15,10 @@ the selected objects excluding the page.
 
 For creating the actual favicon I use [RealFaviconGenerator](https://realfavicongenerator.net/).
 Here I use my exported SVG as an input to create favicons in different formats.
+
+## Swagger Initializer
+
+The file [`./swagger-initializer.js`](./swagger-initializer.js) is used to
+override the file with the same name that comes with the default Swagger UI
+distribution. It is injected by the [`../scripts/place-swagger-ui`](../scripts/place-swagger-ui)
+script.

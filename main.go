@@ -147,7 +147,10 @@ func MakeGetTokenHandler(
 		}
 
 		w.Header().Set("Content-Type", "application/json")
-		w.Write(tokenJSON)
+		_, err = w.Write(tokenJSON)
+		if err != nil {
+			panic(err)
+		}
 	}
 }
 
@@ -278,7 +281,10 @@ func ServeTmpl(a ServeTmplArgs) {
 
 	for _, pattern := range a.patterns {
 		a.router.Get(pattern, func(w http.ResponseWriter, r *http.Request) {
-			w.Write(bytes)
+			_, err = w.Write(bytes)
+			if err != nil {
+				panic(err)
+			}
 		})
 	}
 }

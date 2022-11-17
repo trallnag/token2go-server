@@ -2,8 +2,12 @@
 
 help() {
   cat << EOF
+Downloads and places Swagger UI.
+
 Usage: place-swagger-ui <version>
 Example: place-swagger-ui 4.15.2
+
+Ref: https://github.com/swagger-api/swagger-ui
 EOF
 }
 
@@ -45,11 +49,11 @@ loginfo "Unzipping archive..."
 rm -rf tmp/swagger-ui-$VERSION
 unzip tmp/swagger-ui-$VERSION.zip -d tmp
 
-loginfo "Deleting file: swagger-initializer.js"
-rm tmp/swagger-ui-$VERSION/dist/swagger-initializer.js
+loginfo "Override file: swagger-initializer.js"
+cp -f assets/swagger-initializer.js tmp/swagger-ui-$VERSION/dist/swagger-initializer.js
 
 loginfo "Moving archive dist into place..."
 rm -rf swagger-ui
 cp -r tmp/swagger-ui-$VERSION/dist swagger-ui
 
-logsuccess "SwaggerUI $VERSION dist placed in directory swagger-ui."
+logsuccess "Swagger UI $VERSION dist placed in directory swagger-ui."

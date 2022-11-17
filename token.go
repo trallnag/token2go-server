@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -34,17 +35,30 @@ func ExtractToken(
 	tokenHeaderNames []string,
 	fallbackToken string,
 ) (Token, error) {
+	var secret string
+	var err error = nil
+
+	// Extract secret from header.
 	for _, tokenHeaderName := range tokenHeaderNames {
 		if tokenHeader, ok := headers[tokenHeaderName]; ok {
-			if len(tokenHeader) > 0 {
-				return NewToken(tokenHeader[0]), nil
+			if len(tokenHeader) > 0 && len(tokenHeader[0]) > 0 {
+				secret = tokenHeader[0]
+				break
 			}
 		}
 	}
 
-	if len(fallbackToken) > 0 {
-		return NewToken(fallbackToken), nil
-	} else {
-		return Token{}, errors.New("failed to find token")
+	// Remove optional authorization type.
+	secret = strings.TrimPrefix(secret, "Bearer ")
+
+	// Use optional fallback token.
+	if len(secret) == 0 && len(fallbackToken) > 0 {
+		secret = fallbackToken
 	}
+
+	if len(secret) == 0 {
+		err = errors.New("failed to find token")
+	}
+
+	return NewToken(secret), err
 }

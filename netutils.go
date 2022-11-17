@@ -31,9 +31,9 @@ func IsRequiredQueryParamSet(
 		)
 		http.Error(w, msg, http.StatusBadRequest)
 		return false
-	} else {
-		return true
 	}
+
+	return true
 }
 
 // IsQueryParamValueAllowed checks if given value is allowed. An HTTP error is written to w if

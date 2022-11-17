@@ -72,7 +72,7 @@ func TestExtractToken(t *testing.T) {
 		expectedSecret:   "b",
 		expectedError:    false,
 	}, {
-		name: "3_fallback",
+		name: "4_fallback",
 		headers: http.Header{
 			"x": {"a"},
 			"y": {},
@@ -80,6 +80,16 @@ func TestExtractToken(t *testing.T) {
 		tokenHeaderNames: []string{"X", "Y", "Z"},
 		fallbackToken:    "Foobar",
 		expectedSecret:   "Foobar",
+		expectedError:    false,
+	}, {
+		name: "BearerToken",
+		headers: http.Header{
+			"x": {"a"},
+			"y": {},
+			"z": {"Bearer secret"}},
+		tokenHeaderNames: []string{"z"},
+		fallbackToken:    "",
+		expectedSecret:   "secret",
 		expectedError:    false,
 	}} {
 		t.Run(tc.name, func(t *testing.T) {
