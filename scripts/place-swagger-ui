@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+help() {
+  cat << EOF
+Usage: place-swagger-ui <version>
+Example: place-swagger-ui 4.15.2
+EOF
+}
+
+case $1 in -h | --help | help) help && exit ;; esac
+
+SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
+
+source "$SCRIPT_DIR/log.sh"
+
+cd "$PROJECT_DIR" || exit 1
+
+# ------------------------------------------------------------------------------
+
+if [[ ! $1 ]]; then
+  logerror "Missing argument: version"; help; exit 1
+fi
+
+if printf "$1" | grep --quiet --invert-match '^[0-9.]*$'; then
+  logerror "Invalid argument: '$1'"; help; exit 1
+fi
+
+VERSION=$1
+
+mkdir -p tmp
+
+rm -f tmp/swagger-ui-$VERSION.zip
+
+loginfo "Downloading archive..."
+curl --no-progress-meter --location --fail \
+  https://github.com/swagger-api/swagger-ui/archive/refs/tags/v$VERSION.zip \
+  > tmp/swagger-ui-$VERSION.zip
+
+if [[ $? != 0 ]]; then
+  logerror "Download failed."; exit 1
+fi
+
+loginfo "Unzipping archive..."
+rm -rf tmp/swagger-ui-$VERSION
+unzip tmp/swagger-ui-$VERSION.zip -d tmp
+
+loginfo "Deleting file: swagger-initializer.js"
+rm tmp/swagger-ui-$VERSION/dist/swagger-initializer.js
+
+loginfo "Moving archive dist into place..."
+rm -rf swagger-ui
+cp -r tmp/swagger-ui-$VERSION/dist swagger-ui
+
+logsuccess "SwaggerUI $VERSION dist placed in directory swagger-ui."

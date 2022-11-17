@@ -1,0 +1,158 @@
+<!doctype html>
+<html color-mode="user">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="darkreader-lock">
+  <meta name="darkreader" content="e36b3ac7-7287-4a25-9a5a-bfd4a0d114ac">
+
+  <title>{{ .Title }}</title>
+
+  <meta name="description" content="{{ .Desc1 }}">
+
+  <!-- Preferred over everything else. -->
+  <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg">
+
+  <!-- Two flavors of PNG favion. -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+  <!-- Apple flavored favicon. -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+  <!-- External stylesheets. -->
+  <link rel="stylesheet" type="text/css" href="/css/modern-normalize@1.1.0/modern-normalize.min.css">
+  <link rel="stylesheet" type="text/css" href="/css/mvp@1.12.0/mvp.min.css">
+  <link rel="stylesheet" type="text/css" href="/css/toastify@1.12.0/toastify.min.css">
+
+  <!-- Internal stylesheets. -->
+  <link rel="stylesheet" type="text/css" href="/css/main.css">
+
+  <style>
+    /* Override */
+
+    .mybutton {
+      color: #f7f7f7;
+      height: 3rem;
+      margin-left: 1rem;
+      margin-right: 1rem;
+      min-width: 7.5rem;
+      padding: 0.5rem 0.5rem;
+    }
+
+    .mylabel {
+      display: inline-block;
+      font-weight: normal;
+      min-width: 20em;
+    }
+
+    .myaside {
+      min-width: 100%;
+      max-width: 100%;
+      word-wrap: break-word;
+      margin: 0.6rem;
+    }
+
+    .mycode {
+      word-break: break-all;
+      word-wrap: break-word;
+    }
+
+    .myinput[readonly] {
+      background-color: var(--color-accent);
+      color: var(--color-text);
+      display: inline-block;
+      font-family: monospace;
+      text-align: center;
+    }
+
+    /* Switch button */
+
+    button.switch {
+      padding: 0;
+      width: 5rem;
+      height: 2rem;
+      display: inline-block;
+    }
+
+    button.switch span {
+      padding: 2px 4px;
+      pointer-events: none;
+      border-radius: var(--border-radius);
+      color: #f7f7f7;
+    }
+
+    [role="switch"][aria-checked="false"] :last-child,
+    [role="switch"][aria-checked="true"] :first-child {
+      background: var(--color-secondary);
+    }
+
+    label.switch {
+      clear: both;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1 style="margin-bottom: 0.1em;letter-spacing: 0.1em;">{{ .Title }}</h1>
+    <p style="margin-top: 0px;"><strong>{{ .Desc1 }}</strong></p>
+    {{ if .Desc2 }}<p>{{ .Desc2 }}</p>{{ end }}
+    <section>
+      <aside class="myaside">
+        <h3 style="margin: 0px;">Actions</h3>
+        <button type="button" class="mybutton" id="button-reload">Reload</button>
+        <button type="button" class="mybutton" id="button-copy">Copy</button>
+        <button type="button" class="mybutton" id="button-delete">Delete</button>
+        <h3 style="margin-bottom: 0.5rem; margin-top: 0.5rem;">
+          Token
+        </h3>
+        <input type="text" id="token-input" value="" class="myinput" readonly>
+        <h3 style="margin-top: 0px; margin-bottom: 0.5rem">
+          Fingerprint
+        </h3>
+        <input type="text" id="finger-input" value="" class="myinput" readonly>
+      </aside>
+    </section>
+    <section>
+      <aside class="myaside">
+        <h3 style="margin-top: 0px; margin-bottom: 0px;">Preferences</h3>
+        <div>
+          <label for="switch-auto-copy" class="mylabel" class="switch">
+            Auto copy token to clipboard on load?
+          </label>
+          <button role="switch" id="switch-auto-copy" class="switch"><span>Yes</span><span>No</span></button>
+        </div>
+        <div>
+          <label for="switch-auto-delete" class="mylabel" class="switch">
+            Auto delete token shortly after load?
+          </label>
+          <button role="switch" id="switch-auto-delete" class="switch"><span>Yes</span><span>No</span></button>
+        </div>
+      </aside>
+    </section>
+    {{ if .Misc }}
+    <section>
+      <aside class="myaside">
+        <h3 style="margin-top: 0px;">Miscellaneous</h3>
+        {{ .Misc }}
+      </aside>
+    </section>
+    {{ end }}
+  </header>
+
+  <noscript>
+    <div id="modal" class="noscript-modal">
+      <div class="noscript-modal-content">
+        <p>JavaScript must be enabled</p>
+      </div>
+    </div>
+  </noscript>
+</body>
+
+<script src="/js/toastify@1.12.0/toastify.min.js"></script>
+<script src="/js/index.js"></script>
+
+</html>
