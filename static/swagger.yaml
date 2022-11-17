@@ -1,0 +1,307 @@
+openapi: 3.0.3
+info:
+  title: Token2go
+  license:
+    name: MIT License
+    url: https://github.com/trallnag/token2go-server/blob/trunk/LICENSE
+  version: 1.0.0
+tags:
+  - name: Core
+  - name: Flows
+  - name: Management
+paths:
+  /token:
+    get:
+      tags: [Core]
+      summary: Get token
+      description: |
+        Get token by extracting it from the request itself.
+
+        The Token2go server has a list of
+        token header names it looks for to extract tokens from. This endpoint
+        expects at least one of these header parameters to be set. By default,
+        the server looks for the following headers:
+
+        - Access-Token
+        - Authorization
+        - Token
+        - X-Auth-Request-Access-Token
+        - X-Forwarded-Access-Token
+
+        It will extract the first match and return a client error otherwise. It
+        is also possible that the endpoint will return a fallback token in case
+        no match occurs. But again, this depends on the configuration.
+
+        All other endpoints that extract tokens in Token2go use the same
+        backend logic as this endpoint.
+      parameters:
+        - in: header
+          name: Token
+          schema:
+            type: string
+          description: |
+            This is a **meta parameter** that represents a header that contains
+            a token. There are multiple header names Token2go looks for when
+            trying to extract a token. Configuration regarding this is
+            available. Check the description of `GET /token` and the general
+            documentation for more info.
+      responses:
+        "200":
+          description: |
+            Successful operation. Response contains token and related data.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Token"
+        "444":
+          $ref: "#/components/responses/444TokenNotFound"
+  /flow/redirect/token:
+    get:
+      tags: [Flows]
+      summary: Perform token redirect flow
+      description: |
+        Perform the token redirect flow. Encrypted token is encoded into the
+        redirect URL pointing at provided target.
+
+        **Usecase**
+
+        Token2go client wants to get a token. The client opens this endpoint in
+        the user's browser. Among other input, a public key is provided with the
+        URL as part of the query parameters. The server generates a key and
+        encrypts it with the provided public certificate. The key is used to
+        encrypt token data. Encrypted key and data are encoded into query
+        parameters and added to the provided redirect URL. Finally, the
+        user is redirected. Probably to a server hosted on localhost by the
+        Token2go client.
+
+        **Flow**
+
+        1. Client setup.
+            1. Start up temporary server on localhost.
+            2. Generate key pair according to requirments.
+            3. Bake input baked into URL query parameters.
+            4. Open this endpoint in user's browser.
+        2. Endpoint processing.
+            1. Extract token and stuff.
+            2. Generate key for symmetric encryption.
+            3. Encrypt key using asymmetric encryption.
+            4. Encrypt payload with generated key.
+            5. Bake encrypted key and data into URL query parameters.
+            6. Return redirect to provided target + query parameters.
+        3. Receive and process redirection in client.
+            1. Base64 decode key, nonce, and payload.
+            2. Decrypt key with private key.
+            3. Decrypt payload with decrypted key and nonce.
+            4. Retrieve token and other data by unmarshalling.
+      parameters:
+        - in: header
+          name: Token
+          schema:
+            type: string
+          description: |
+            This is a **meta parameter** that represents a header that contains
+            a token. There are multiple header names Token2go looks for when
+            trying to extract a token. Configuration regarding this is
+            available. Check the description of `GET /token` and the general
+            documentation for more info.
+        - in: query
+          name: target
+          required: true
+          schema:
+            type: string
+            example: http://localhost:42123/blabla
+          description: |
+            Target of redirection. Must be a valid URL. Must not contain query
+            parameters or the question mark.
+        - in: query
+          name: state
+          required: true
+          schema:
+            type: string
+            example: random-data-stuff
+          description: |
+            Arbitrary data that will be piped 1:1 as part of the redirect query
+            parameters.
+        - in: query
+          name: publicKeyType
+          required: true
+          schema:
+            type: string
+            enum:
+              - rsa2048-rfc5280-x509-pem
+              - rsa2048-rfc8017-pksc1-pem
+          description: |
+            The token redirect flow is only able to process certain types of
+            input data. Soft enforcment is done with this parameter.
+
+            The public
+            key must always be PEM-encoded. In addition, only the ecryption
+            schema RSA with a key length of 2048 bits is currently supported.
+            Looking at the key format, RFC5280 (X.509) and RFC8017 (PKCS #1)
+            are allowed.
+
+            - `rsa2048-rfc5280-x509-pem`: RSA 2048 bits. RFC5280 (X.509). PEM ecoding.
+            - `rsa2048-rfc8017-pksc1-pem`: RSA 2048 bits. RFC8017 (PKCS #1). PEM ecoding.
+
+            Check out the documentation of the `publicKey` parameter for
+            concrete examples.
+        - in: query
+          name: publicKey
+          required: true
+          schema:
+            type: string
+            example: -----BEGIN%20RSA%20PUBLIC%2...
+          description: |
+            Public key used for asymmetric encryption (with RSA) of the key used
+            for symmetric encryption (with AES-GCM) of the actual token payload data.
+            Public key format and type must be supported in `publicKeyType`.
+            In the following you can find several examples for valid public keys.
+
+            RSA 2048 bits. RFC5280 (X.509). PEM ecoding:
+
+            ```
+            -----BEGIN PUBLIC KEY-----
+            xxx
+            -----END PUBLIC KEY-----
+            ```
+
+            RSA 2048 bits. RFC8017 (PKCS #1). PEM ecoding:
+
+            ```
+            -----BEGIN RSA PUBLIC KEY-----
+            xxx
+            -----END RSA PUBLIC KEY-----
+            ```
+
+            To send a public key via query parameter, it must be URL encoded.
+      responses:
+        "301":
+          description: |
+            Successful operation. Data contained within URL query
+            parameters `state`, `key`, `nonce`, and `payload`.
+
+            - `state`: Arbitrary data taken directly from the corresponding
+              URL parameter of the request.
+            - `key`: Base64 encoded key used for symmetric encryption of the
+              `payload`. Key itself has been encrypted with RSA using
+              the provided public key. Key is only useful combined with `nonce`
+              and following AES-GCM during payload decryption.
+            - `nonce`: Base64 encoded random data that has been encrypted
+              together with the token data into the payload using AES-GCM.
+              Must be used together `key` during payload decryption.
+            - `payload`: Base64 encoded symmetrically encrypted payload.
+              AES-GCM is used for encryption. `key` and `nonce` are required
+              for decryption. Decrypted payload structure matches the JSON
+              encoded `Token` component below.
+
+            The decrypted payload is JSON encoded and has the following fields:
+
+            - `timestamp`: `string`: Date and time of token extraction from request.
+            - `fingerprint`: `string`: Stable fingerprint of the extracted token.
+            - `secret`: `string`: Secret token itself. Prefixes like "Bearer" stripped.
+
+            Check the `Token` component in the OpenAPI schema for more info.
+          headers:
+            Location:
+              schema:
+                type: string
+              description: Redirection target. Matches equivalent request query parameter.
+        "444":
+          $ref: "#/components/responses/444TokenNotFound"
+  /health:
+    get:
+      tags: [Management]
+      summary: Check health of Token2go server
+      description: |
+        Check health of Token2go server. Only if the returned status code is 200,
+        everything is good. The response contains further information. Note that
+        at the moment this endpoint contains no actual health checks and will
+        always return 200 as long as the server itself is up.
+
+        Can be used for stuff like probes in Kubernetes.
+      responses:
+        "200":
+          description: Server is healthy. Response contains no further information.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: OK.
+  /echo:
+    get:
+      tags: [Management]
+      summary: Get an echo of the request
+      description: |
+        Get an echo of all the request headers, parameters, and other related information.
+
+        Header and parameter values are always arrays of strings.
+
+        Names of individual headers are normalized.
+      parameters:
+        - in: query
+          name: pretty
+          schema:
+            type: string
+            minLength: 0
+          description: |
+            Pretty print JSON. Value not required, name alone is enough.
+      responses:
+        "200":
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  parameters:
+                    type: object
+                    additionalProperties:
+                      type: array
+                      items:
+                        type: string
+                    example:
+                      "filXter": ["value", "anuda", "72"]
+                      "BOOL-ean": ["true"]
+                  headers:
+                    type: object
+                    additionalProperties:
+                      type: array
+                      items:
+                        type: string
+                    example:
+                      "User-Agent": ["curl/7.64.1"]
+                      "Accept": ["*/*"]
+                  remoteAddr:
+                    type: string
+                    example: "188.1.242.78:46789"
+components:
+  schemas:
+    Token:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          example: 2006-01-02T15:04:05Z07:00
+          description: Date and time of token extraction from request.
+        fingerprint:
+          type: string
+          example: 2da70b1c472d72650b420a9b2e8bc5ebbffbf19143a1e93d0a455efcbb123723
+          description: Stable fingerprint of the extracted token.
+        secret:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ
+          description: Secret token itself. Prefixes like "Bearer" stripped.
+  responses:
+    444TokenNotFound:
+      description: |
+        Token not found. Token2go failed to find a token in request's headers.
+      content:
+        text/plain:
+          schema:
+            type: string
+            example: |
+              Token not found. Looking for: Access-Token, Authorization,
+              Token, X-Auth-Request-Access-Token, X-Forwarded-Access-Token

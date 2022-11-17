@@ -1,0 +1,53 @@
+version: 3
+
+vars:
+  APP_NAME: "{{ default `token2go-server` .APP_NAME }}"
+  DIST_DIR: "{{ default `dist` .DIST_DIR }}"
+  OCI_REG: "{{ default `docker.io/trallnag` .OCI_REG }}"
+
+tasks:
+  build-dist:
+    desc: Build distribution for multiple platforms.
+    cmds:
+      - >-
+        scripts/build-dist.py
+        --name={{ .APP_NAME }}
+        --dir={{ .DIST_DIR }}
+        {{ if .VERSION -}}
+        --version={{ .VERSION }}
+        {{ end }}
+    vars:
+      VERSION: "{{ default .VERSION nil }}"
+
+  build-buildx:
+    desc: Build and push Docker images for multiple platforms using Buildx.
+    cmds:
+      - >-
+        docker buildx build --push
+        --platform linux/amd64,linux/arm64
+        {{ if .LATEST -}}
+        --tag={{ .OCI_REG }}/{{ .APP_NAME }}:latest
+        {{ end -}}
+        {{ if .VERSION -}}
+        --tag={{ .OCI_REG }}/{{ .APP_NAME }}:{{ .VERSION }}
+        {{ end -}}
+        .
+    vars:
+      LATEST: "{{ default .LATEST nil }}"
+      VERSION: "{{ or .VERSION (fail `VERSION required`)}}"
+
+  update-swagger:
+    desc: Update vendored Swagger UI to set version.
+    cmds:
+      - scripts/update-swagger.sh {{ .VERSION }}
+    status:
+      - test -f swagger-ui/version.txt
+      - "[[ $(cat swagger-ui/version.txt) == {{ .VERSION }} ]]"
+    vars:
+      VERSION: "{{ default .VERSION `4.15.5` }}"
+
+  extract-notes:
+    desc: Extract notes for the latest release from a changelog file.
+    cmds:
+      - mkdir -p tmp
+      - scripts/extract-notes.py --input CHANGELOG.md --output tmp/release.md
