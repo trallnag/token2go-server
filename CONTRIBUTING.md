@@ -19,9 +19,8 @@ Tool written in Python used for maintaining Git hooks. Must be installed
 beforehand.
 
 - <https://pre-commit.com/>
-- <https://github.com/pre-commit/pre-commit>
 
-Whenever this repository is initially cloned, the following should be executed:
+Whenever this repository is initially cloned, execute:
 
 ```
 pre-commit install --install-hooks
@@ -29,6 +28,8 @@ pre-commit install --install-hooks --hook-type commit-msg
 ```
 
 Pre-commit should now run on every commit.
+
+Note that Go must be installed for some hooks to work properly.
 
 Read [`docs/devel/pre-commit.md`](docs/devel/pre-commit.md) for more
 information.

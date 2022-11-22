@@ -17,7 +17,9 @@ pre-commit install --install-hooks --hook-type commit-msg
 Pre-commit should now run on every commit. It is also used in GitHub Actions.
 
 Pre-commit is configured via
-[`../.pre-commit-config.yaml`](../.pre-commit-config.yaml).
+[`.pre-commit-config.yaml`](../../.pre-commit-config.yaml).
+
+Note that Go must be installed for some hooks to work properly.
 
 ## Cheat Sheet
 
