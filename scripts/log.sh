@@ -1,7 +1,3 @@
-#!/bin/sh
-
-# ------------------------------------------------------------------------------
-
 # Logsh. A minimal POSIX compliant logging library.
 #
 # Usage:
@@ -37,8 +33,6 @@
 #
 # Source Repository:
 #   https://github.com/trallnag/logsh
-
-# ------------------------------------------------------------------------------
 
 if [ "${LOGSH_COLOR:-true}" = "true" ]; then
   _logsh_default_color='\033[0m'
@@ -78,5 +72,3 @@ logsuccess() { log "$1" 2 "SUCCESS" "$_logsh_success_color"; }
 loginfo() { log "$1" 3 "INFO" "$_logsh_info_color"; }
 
 logdebug() { log "$1" 4 "DEBUG" "$_logsh_debug_color"; }
-
-# ------------------------------------------------------------------------------
