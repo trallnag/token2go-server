@@ -15,7 +15,11 @@ on:
 
 jobs:
   codeql:
-    name: CodeQL
+    name: codeql
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [go]
     runs-on: ubuntu-latest
 
     permissions:

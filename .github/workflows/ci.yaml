@@ -11,8 +11,8 @@ on:
     branches: [trunk, dev]
 
 jobs:
-  golangci:
-    name: lint
+  ci:
+    name: ci
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
