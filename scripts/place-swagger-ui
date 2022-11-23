@@ -52,6 +52,9 @@ unzip tmp/swagger-ui-$VERSION.zip -d tmp
 loginfo "Override file: swagger-initializer.js"
 cp -f assets/swagger-initializer.js tmp/swagger-ui-$VERSION/dist/swagger-initializer.js
 
+loginfo "Adding version indicator file..."
+printf "$VERSION\n" > tmp/swagger-ui-$VERSION/dist/version
+
 loginfo "Moving archive dist into place..."
 rm -rf swagger-ui
 cp -r tmp/swagger-ui-$VERSION/dist swagger-ui
