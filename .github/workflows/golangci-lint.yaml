@@ -1,11 +1,20 @@
 name: golangci-lint
 
+#
+# Lint code with golangci-lint.
+#
+# - <https://golangci-lint.run>
+# - <https://github.com/golangci/golangci-lint>
+#
+# Could be merged into the ci workflow.
+#
+
 on:
   workflow_dispatch:
-  push:
-    tags: [v*]
-    branches: [trunk]
   pull_request:
+  push:
+  schedule:
+    - cron: 1 6 8 * *
 
 permissions:
   contents: read
@@ -15,11 +24,11 @@ jobs:
     name: lint
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+
       - uses: actions/setup-go@v3
         with:
           go-version: 1.19
-
-      - uses: actions/checkout@v3
 
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
