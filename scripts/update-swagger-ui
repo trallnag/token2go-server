@@ -44,9 +44,9 @@ VERSION=$1
 set -euo pipefail
 
 mkdir -p tmp
+rm -rf tmp/swagger-ui-*
 
 # Download archive.
-rm -rf "tmp/swagger-ui-$VERSION.zip"
 OPTS=(--no-progress-meter --location --fail)
 URL="https://github.com/swagger-api/swagger-ui/archive/refs/tags/v$VERSION.zip"
 if ! curl "${OPTS[@]}" "$URL" > "tmp/swagger-ui-$VERSION.zip"; then
@@ -54,7 +54,6 @@ if ! curl "${OPTS[@]}" "$URL" > "tmp/swagger-ui-$VERSION.zip"; then
 fi
 
 # Unzip archive.
-rm -rf "tmp/swagger-ui-$VERSION"
 unzip -q "tmp/swagger-ui-$VERSION.zip" -d tmp
 
 # Override file.
