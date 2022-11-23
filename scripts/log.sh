@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # Logsh. A minimal POSIX compliant logging library.
 #
 # Usage:

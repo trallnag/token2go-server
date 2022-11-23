@@ -30,11 +30,11 @@ cd "$PROJECT_DIR" || exit 1
 # ------------------------------------------------------------------------------
 
 if [[ ! $1 ]]; then
-  logerror "Missing parameter: VERSION"; help; exit 1
+  logerror "Missing parameter: VERSION" && help && exit 1
 fi
 
 if printf "%s" "$1" | grep --quiet --invert-match '^[0-9.]*$'; then
-  logerror "Invalid argument: VERSION='$1'"; help; exit 1
+  logerror "Invalid argument: VERSION='$1'" && help && exit 1
 fi
 
 VERSION=$1
@@ -49,8 +49,8 @@ mkdir -p tmp
 rm -rf "tmp/swagger-ui-$VERSION.zip"
 OPTS=(--no-progress-meter --location --fail)
 URL="https://github.com/swagger-api/swagger-ui/archive/refs/tags/v$VERSION.zip"
-if ! curl "${OPTS[@]}" "$URL"  > "tmp/swagger-ui-$VERSION.zip"; then
-  logerror "Download failed."; exit 1;
+if ! curl "${OPTS[@]}" "$URL" > "tmp/swagger-ui-$VERSION.zip"; then
+  logerror "Download failed." && exit 1
 fi
 
 # Unzip archive.
