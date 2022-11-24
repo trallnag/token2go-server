@@ -52,13 +52,7 @@ for arch in "${archs[@]}"; do
   go_os=$(echo "$arch" | awk -F- '{print $1}')
   go_arch=$(echo "$arch" | awk -F- '{print $2}')
 
-  if [[ $VERSION == latest ]]; then
-    suffix=""
-  else
-    suffix="-$VERSION"
-  fi
-
-  bin_name="$NAME$suffix.$arch"
+  bin_name="$NAME.$arch"
 
   # Compile.
   CGO_ENABLED=0 GOOS="$go_os" GOARCH="$go_arch" \
@@ -75,6 +69,6 @@ done
 # Checksum.
 cd dist > /dev/null
 rm -f sha256sums.txt
-sha256sum ./* > sha256sums.txt
+sha256sum -- * > sha256sums.txt
 cat sha256sums.txt
 cd - > /dev/null
