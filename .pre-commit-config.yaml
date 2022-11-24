@@ -32,23 +32,28 @@ repos:
           - --color=always
           - --external-sources
 
-  - repo: https://github.com/pecigonzalo/pre-commit-shfmt
-    rev: v2.1.0
-    hooks:
-    - id: shell-fmt
-      args:
-        - --binary-next-line
-        - --diff
-        - --indent=2
-        - --list
-        - --simplify
-        - --space-redirects
-        - --write
-
   - repo: https://github.com/golangci/golangci-lint
     rev: v1.50.1
     hooks:
       - id: golangci-lint
+
+  - repo: local
+    hooks:
+      - id: shfmt
+        name: shfmt
+        language: golang
+        additional_dependencies: [mvdan.cc/sh/v3/cmd/shfmt@v3.5.1]
+        entry: shfmt
+        types: [file, shell]
+        exclude_types: [zsh]
+        args:
+          - --binary-next-line
+          - --diff
+          - --indent=2
+          - --list
+          - --simplify
+          - --space-redirects
+          - --write
 
 exclude: |
   (?x)^(
