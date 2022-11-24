@@ -16,12 +16,16 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 )
 
+var version = "development"
+
 //go:embed all:static
 //go:embed all:swagger-ui
 //go:embed all:template
 var content embed.FS
 
 func main() {
+	fmt.Println("token2go-server", version)
+
 	c := NewConfig()
 
 	err := http.ListenAndServe(
