@@ -23,6 +23,28 @@ repos:
     hooks:
       - id: mdformat
 
+  - repo: https://github.com/koalaman/shellcheck-precommit
+    rev: v0.8.0
+    hooks:
+      - id: shellcheck
+        args:
+          - --check-sourced
+          - --color=always
+          - --external-sources
+
+  - repo: https://github.com/pecigonzalo/pre-commit-shfmt
+    rev: v2.1.0
+    hooks:
+    - id: shell-fmt
+      args:
+        - --binary-next-line
+        - --diff
+        - --indent=2
+        - --list
+        - --simplify
+        - --space-redirects
+        - --write
+
   - repo: https://github.com/golangci/golangci-lint
     rev: v1.50.1
     hooks:
