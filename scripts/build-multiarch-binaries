@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+
+help() {
+  cat << EOF
+Build binaries and friends for multiple architectures. Includes binaries,
+compressed binaries, and checksums. Used for release preparation.
+
+Usage:
+  $(basename "$0") NAME VERSION
+
+Args:
+  NAME: Package name.
+  VERSION: Version or reference.
+
+Examples:
+  $(basename "$0") token2go-server latest
+  $(basename "$0") token2go-server 1.5.2
+EOF
+}
+
+case $1 in -h | --help | help) help && exit ;; esac
+
+SCRIPT_DIR=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
+PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
+
+source "$SCRIPT_DIR/log.sh"
+
+cd "$PROJECT_DIR" || exit 1
+
+# ------------------------------------------------------------------------------
+
+if [[ ! $1 ]]; then
+  logerror "Missing parameter: NAME" && help && exit 1
+fi
+
+if [[ ! $2 ]]; then
+  logerror "Missing parameter: VERSION" && help && exit 1
+fi
+
+NAME="$1"
+VERSION="$2"
+
+# ------------------------------------------------------------------------------
+
+set -euo pipefail
+
+archs=(linux-amd64 linux-arm64)
+
+mkdir -p dist
+
+for arch in "${archs[@]}"; do
+  go_os=$(echo "$arch" | awk -F- '{print $1}')
+  go_arch=$(echo "$arch" | awk -F- '{print $2}')
+
+  if [[ $VERSION == latest ]]; then
+    suffix=""
+  else
+    suffix="-$VERSION"
+  fi
+
+  bin_name="$NAME$suffix.$arch"
+
+  # Compile.
+  CGO_ENABLED=0 GOOS="$go_os" GOARCH="$go_arch" \
+    go build -o "dist/$bin_name" -ldflags="-X 'main.version=$VERSION'"
+
+  cd dist > /dev/null
+
+  # Compress.
+  tar -czvf "$bin_name.tar.gz" "$bin_name"
+
+  cd - > /dev/null
+done
+
+# Checksum.
+cd dist > /dev/null
+rm -f sha256sums.txt
+sha256sum ./* > sha256sums.txt
+cat sha256sums.txt
+cd - > /dev/null
