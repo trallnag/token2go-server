@@ -34,3 +34,14 @@ Run specific hook against all files.
 ```
 pre-commit run <hook> -a
 ```
+
+## Housekeeping
+
+Update hooks in general.
+
+```
+pre-commit autoupdate
+```
+
+Update local hook `shfmt` additional dependency by adjusting the version. Check
+for new versions [here](https://github.com/mvdan/sh).

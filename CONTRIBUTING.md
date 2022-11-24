@@ -15,8 +15,7 @@ Also consider taking a look at the development documentation at
 
 ### Pre-commit <!-- omit in toc -->
 
-Tool written in Python used for maintaining Git hooks. Must be installed
-beforehand.
+Tool written in Python used for maintaining Git hooks.
 
 - <https://pre-commit.com/>
 
