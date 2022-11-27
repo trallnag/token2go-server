@@ -20,6 +20,8 @@ repos:
     rev: 0.7.16
     hooks:
       - id: mdformat
+        args:
+          - --wrap=80
 
   - repo: https://github.com/koalaman/shellcheck-precommit
     rev: v0.8.0
