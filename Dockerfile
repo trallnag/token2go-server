@@ -1,20 +1,15 @@
-FROM golang:1.19-alpine AS build
+FROM gcr.io/distroless/static-debian11:nonroot
 
-ENV CGO_ENABLED 0
+ARG APP_NAME
+ARG RELEASE_DIR
 
-WORKDIR /build
+ARG TARGETOS
+ARG TARGETARCH
 
-COPY go.mod .
-# COPY go.sum .
+COPY LICENSE /LICENSE
 
-RUN go mod download
+COPY $RELEASE_DIR/$APP_NAME.$TARGETOS-$TARGETARCH /app
 
-COPY . .
+EXPOSE 8080
 
-RUN go build -o token2go-server
-
-FROM alpine:3.16
-
-COPY --from=build /build/token2go-server /usr/local/bin/
-
-CMD [ "token2go-server" ]
+ENTRYPOINT ["/app"]
