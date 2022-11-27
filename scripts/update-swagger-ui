@@ -2,7 +2,7 @@
 
 help() {
   cat << EOF
-Update the vendored Swagger UI distribution.
+Update the vendored Swagger UI distribution to given version.
 
 Usage:
   $(basename "$0") VERSION
@@ -12,6 +12,7 @@ Args:
 
 Examples:
   $(basename "$0") 4.15.5
+  $(basename "$0") 4.15.2
 
 Ref:
   https://github.com/swagger-api/swagger-ui
@@ -22,6 +23,9 @@ case $1 in -h | --help | help) help && exit ;; esac
 
 SCRIPT_DIR=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
+
+# shellcheck source=scripts/log.sh
+source "$SCRIPT_DIR/log.sh"
 
 cd "$PROJECT_DIR" || exit 1
 
@@ -42,7 +46,8 @@ VERSION=$1
 set -euo pipefail
 
 mkdir -p tmp
-rm -rf tmp/swagger-ui-*
+rm -rf "tmp/swagger-ui-$VERSION.zip"
+rm -rf "tmp/swagger-ui-$VERSION"
 
 # Download archive.
 OPTS=(--no-progress-meter --location --fail)

@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+
+help() {
+  cat << EOF
+Cross compile binaries and friends for multiple architectures. Includes
+binaries, compressed binaries, and checksums. Used as part of release process.
+
+Usage:
+  $(basename "$0") APP_NAME VERSION RELEASE_DIR
+
+Args:
+  APP_NAME: Package name.
+  VERSION: Version or reference.
+  RELEASE_DIR: Directory to place result.
+
+Examples:
+  $(basename "$0") token2go-server latest tmp
+  $(basename "$0") token2go-server 1.5.2 ./release
+EOF
+}
+
+case $1 in -h | --help | help) help && exit ;; esac
+
+SCRIPT_DIR=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
+PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
+
+# shellcheck source=scripts/log.sh
+source "$SCRIPT_DIR/log.sh"
+
+cd "$PROJECT_DIR" || exit 1
+
+# ------------------------------------------------------------------------------
+
+if [[ ! $1 ]]; then
+  logerror "Missing parameter: APP_NAME"
+  help
+  exit 1
+fi
+
+if [[ ! $2 ]]; then
+  logerror "Missing parameter: VERSION"
+  help
+  exit 1
+fi
+
+if [[ ! $3 ]]; then
+  logerror "Missing parameter: RELEASE_DIR"
+  help
+  exit 1
+fi
+
+APP_NAME="$1"
+VERSION="$2"
+RELEASE_DIR="$3"
+
+ARCHS=(
+  darwin-amd64
+  darwin-arm64
+  linux-amd64
+  linux-arm64
+)
+
+# ------------------------------------------------------------------------------
+
+set -euo pipefail
+
+mkdir -p "$RELEASE_DIR"
+
+for arch in "${ARCHS[@]}"; do
+  bin_name="$APP_NAME.$arch"
+
+  # Compile.
+  CGO_ENABLED=0 \
+    GOOS=$(echo "$arch" | awk -F- '{print $1}') \
+    GOARCH=$(echo "$arch" | awk -F- '{print $2}') \
+    go build -o "$RELEASE_DIR/$bin_name" -ldflags="-X 'main.version=$VERSION'"
+
+  # Compress.
+  cd "$RELEASE_DIR" > /dev/null
+  tar -czvf "$bin_name.tar.gz" "$bin_name"
+  cd - > /dev/null
+done
+
+# Checksuma.
+cd "$RELEASE_DIR" > /dev/null
+rm -f sha256sums.txt
+sha256sum -- * > sha256sums.txt
+cat sha256sums.txt
+cd - > /dev/null

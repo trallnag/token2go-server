@@ -3,9 +3,7 @@ repos:
     rev: v4.4.0
     hooks:
       - id: check-added-large-files
-      - id: check-executables-have-shebangs
       - id: check-merge-conflict
-      - id: check-shebang-scripts-are-executable
       - id: check-symlinks
       - id: end-of-file-fixer
       - id: fix-byte-order-marker
@@ -27,10 +25,6 @@ repos:
     rev: v0.8.0
     hooks:
       - id: shellcheck
-        args:
-          - --check-sourced
-          - --color=always
-          - --external-sources
 
   - repo: https://github.com/golangci/golangci-lint
     rev: v1.50.1

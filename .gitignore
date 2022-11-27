@@ -3,7 +3,7 @@
 
 
 .vscode/
-dist/
+release/
 tmp/
 
 
