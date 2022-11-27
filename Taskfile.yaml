@@ -1,0 +1,34 @@
+version: 3
+
+vars:
+  APP_NAME: "{{ default `token2go-server` .APP_NAME }}"
+  RELEASE_DIR: "{{ default `release` .RELEASE_DIR }}"
+  OCI_REG_PREFIX: "{{ default `docker.io/trallnag` .OCI_REG_PREFIX }}"
+  VERSION: "{{ default `development` .VERSION }}"
+
+tasks:
+  buildx-docker:
+    desc: Build and push Docker images for multiple architectures.
+    cmds:
+      - >-
+        docker buildx build --push
+        --build-arg APP_NAME={{ .APP_NAME }}
+        --build-arg RELEASE_DIR={{ .RELEASE_DIR }}
+        --platform linux/amd64,linux/arm64
+        --tag={{ .OCI_REG_PREFIX }}/{{ .APP_NAME }}:{{ .VERSION }}
+        .
+
+  cross-compile-binaries:
+    desc: Cross compile binaries for multiple architectures.
+    cmds:
+      - scripts/cross-compile-binaries {{ .APP_NAME }} {{ .VERSION }} {{ .RELEASE_DIR }}
+
+  update-swagger-ui:
+    desc: Update vendored Swagger UI to configured version.
+    cmds:
+      - scripts/update-swagger-ui {{ .VERSION }}
+    status:
+      - test -f swagger-ui/version.txt
+      - "[[ $(cat swagger-ui/version.txt) == {{ .VERSION }} ]]"
+    vars:
+      VERSION: 4.15.5
