@@ -388,3 +388,19 @@ func TestNewIndexTmplData_Misc(t *testing.T) {
 		t.Errorf("Wrong Misc: got %q, want %q", got, want)
 	}
 }
+
+func TestInitRouter(t *testing.T) {
+	c := NewConfig()
+	initRouter(
+		c.fallbackToken,
+		c.tokenHeaderNames,
+		c.addTokenHeaderNames,
+		NewIndexTmplData(
+			c.uiTarget,
+			c.uiTitle,
+			c.uiDesc1,
+			c.uiDesc2,
+			c.uiMisc,
+		),
+	)
+}
