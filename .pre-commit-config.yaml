@@ -23,15 +23,15 @@ repos:
         args:
           - --wrap=80
 
-  - repo: https://github.com/koalaman/shellcheck-precommit
-    rev: v0.8.0
-    hooks:
-      - id: shellcheck
-
   - repo: https://github.com/golangci/golangci-lint
     rev: v1.50.1
     hooks:
       - id: golangci-lint
+
+  - repo: https://github.com/koalaman/shellcheck-precommit
+    rev: v0.8.0
+    hooks:
+      - id: shellcheck
 
   - repo: local
     hooks:
@@ -60,3 +60,4 @@ exclude: |
 ci:
   skip:
     - golangci-lint
+    - shellcheck

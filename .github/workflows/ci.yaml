@@ -50,3 +50,8 @@ jobs:
         uses: golangci/golangci-lint-action@v3
         with:
           version: latest
+
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: scripts
