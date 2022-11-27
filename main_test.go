@@ -15,28 +15,6 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-func TestEmbeddedContent(t *testing.T) {
-	for _, expected := range []string{
-		"static/apple-touch-icon.png",
-		"static/css/main.css",
-		"static/css/modern-normalize@1.1.0",
-		"static/css/mvp@1.12.0",
-		"static/css/toastify@1.12.0",
-		"static/favicon-16x16.png",
-		"static/favicon-32x32.png",
-		"static/favicon.ico",
-		"static/favicon.svg",
-		"static/js/index.js",
-		"static/js/toastify@1.12.0",
-		"template/index.html",
-	} {
-		_, err := fs.Stat(content, expected)
-		if err != nil {
-			t.Errorf("node does not exist in embedded content: %s", expected)
-		}
-	}
-}
-
 func TestUsageOfExLibs(t *testing.T) {
 	expectedStrings := []string{
 		"modern-normalize@1.1.0/modern-normalize.min.css",
