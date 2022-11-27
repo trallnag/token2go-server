@@ -56,3 +56,7 @@ exclude: |
     CHANGELOG.md|
     swagger-ui\/.*
   )$
+
+ci:
+  skip:
+    - golangci-lint
