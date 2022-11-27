@@ -1,4 +1,4 @@
-name: ci
+name: CI
 
 #
 # Primary workflow for continues integration.
@@ -9,10 +9,12 @@ on:
   pull_request:
   push:
     branches: [trunk, dev]
+  schedule:
+    - cron: 4 4 * * 1
 
 jobs:
-  ci:
-    name: ci
+  test:
+    name: Test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -31,3 +33,21 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           fail_ci_if_error: true
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Go
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: latest
