@@ -1,15 +1,7 @@
 FROM gcr.io/distroless/static-debian11:nonroot
 
-ARG APP_NAME
-ARG RELEASE_DIR
-
-ARG TARGETOS
-ARG TARGETARCH
-
-COPY LICENSE /LICENSE
-
-COPY $RELEASE_DIR/$APP_NAME.$TARGETOS-$TARGETARCH /app
+COPY token2go-server /token2go-server/token2go-server
 
 EXPOSE 8080
 
-ENTRYPOINT ["/app"]
+ENTRYPOINT ["/token2go-server/token2go-server"]
