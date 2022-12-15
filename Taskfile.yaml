@@ -2,33 +2,52 @@ version: 3
 
 vars:
   APP_NAME: "{{ default `token2go-server` .APP_NAME }}"
-  RELEASE_DIR: "{{ default `release` .RELEASE_DIR }}"
-  OCI_REG_PREFIX: "{{ default `docker.io/trallnag` .OCI_REG_PREFIX }}"
-  VERSION: "{{ default `development` .VERSION }}"
+  DIST_DIR: "{{ default `dist` .DIST_DIR }}"
+  OCI_REG: "{{ default `docker.io/trallnag` .OCI_REG }}"
 
 tasks:
-  buildx-docker:
-    desc: Build and push Docker images for multiple architectures.
+  build-dist:
+    desc: Build distribution for multiple platforms.
+    cmds:
+      - >-
+        scripts/build-dist.py
+        --name={{ .APP_NAME }}
+        --dir={{ .DIST_DIR }}
+        {{ if .VERSION -}}
+        --version={{ .VERSION }}
+        {{ end }}
+    vars:
+      VERSION: "{{ default .VERSION nil }}"
+
+  build-buildx:
+    desc: Build and push Docker images for multiple platforms using Buildx.
     cmds:
       - >-
         docker buildx build --push
-        --build-arg APP_NAME={{ .APP_NAME }}
-        --build-arg RELEASE_DIR={{ .RELEASE_DIR }}
         --platform linux/amd64,linux/arm64
-        --tag={{ .OCI_REG_PREFIX }}/{{ .APP_NAME }}:{{ .VERSION }}
+        {{ if .LATEST -}}
+        --tag={{ .OCI_REG }}/{{ .APP_NAME }}:latest
+        {{ end -}}
+        {{ if .VERSION -}}
+        --tag={{ .OCI_REG }}/{{ .APP_NAME }}:{{ .VERSION }}
+        {{ end -}}
         .
+    vars:
+      LATEST: "{{ default .LATEST nil }}"
+      VERSION: "{{ or .VERSION (fail `VERSION required`)}}"
 
-  cross-compile-binaries:
-    desc: Cross compile binaries for multiple architectures.
+  update-swagger:
+    desc: Update vendored Swagger UI to set version.
     cmds:
-      - scripts/cross-compile-binaries {{ .APP_NAME }} {{ .VERSION }} {{ .RELEASE_DIR }}
-
-  update-swagger-ui:
-    desc: Update vendored Swagger UI to configured version.
-    cmds:
-      - scripts/update-swagger-ui {{ .VERSION }}
+      - scripts/update-swagger.sh {{ .VERSION }}
     status:
       - test -f swagger-ui/version.txt
       - "[[ $(cat swagger-ui/version.txt) == {{ .VERSION }} ]]"
     vars:
-      VERSION: 4.15.5
+      VERSION: "{{ default .VERSION `4.15.5` }}"
+
+  extract-notes:
+    desc: Extract notes for the latest release from a changelog file.
+    cmds:
+      - mkdir tmp
+      - scripts/extract-notes.py --input CHANGELOG --output tmp/release.md

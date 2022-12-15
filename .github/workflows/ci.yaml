@@ -10,6 +10,7 @@ on:
   push:
     branches: [trunk, dev]
   schedule:
+    # At 04:04 on Monday.
     - cron: 4 4 * * 1
 
 jobs:

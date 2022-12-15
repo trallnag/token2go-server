@@ -24,19 +24,16 @@ case $1 in -h | --help | help) help && exit ;; esac
 SCRIPT_DIR=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 
-# shellcheck source=scripts/log.sh
-source "$SCRIPT_DIR/log.sh"
-
 cd "$PROJECT_DIR" || exit 1
 
 # ------------------------------------------------------------------------------
 
 if [[ ! $1 ]]; then
-  logerror "Missing parameter: VERSION" && help && exit 1
+  echo "Missing parameter: VERSION" && help && exit 1
 fi
 
 if printf "%s" "$1" | grep --quiet --invert-match '^[0-9.]*$'; then
-  logerror "Invalid argument: VERSION='$1'" && help && exit 1
+  echo "Invalid argument: VERSION='$1'" && help && exit 1
 fi
 
 VERSION=$1
@@ -53,7 +50,7 @@ rm -rf "tmp/swagger-ui-$VERSION"
 OPTS=(--no-progress-meter --location --fail)
 URL="https://github.com/swagger-api/swagger-ui/archive/refs/tags/v$VERSION.zip"
 if ! curl "${OPTS[@]}" "$URL" > "tmp/swagger-ui-$VERSION.zip"; then
-  logerror "Download failed." && exit 1
+  echo "Download failed." && exit 1
 fi
 
 # Unzip archive.

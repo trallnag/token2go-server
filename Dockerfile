@@ -1,7 +1,12 @@
-FROM gcr.io/distroless/static-debian11:nonroot
+FROM scratch
 
-COPY token2go-server /token2go-server/token2go-server
+ARG TARGETOS
+ARG TARGETARCH
+
+WORKDIR /app
+
+COPY dist/token2go-server-${TARGETOS}-${TARGETARCH} /app/token2go-server
 
 EXPOSE 8080
 
-ENTRYPOINT ["/token2go-server/token2go-server"]
+ENTRYPOINT ["/app/token2go-server"]

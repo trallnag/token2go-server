@@ -16,12 +16,16 @@ repos:
         stages: [commit-msg]
         additional_dependencies: ["@commitlint/config-conventional"]
 
-  - repo: https://github.com/executablebooks/mdformat
-    rev: 0.7.16
+  - repo: https://github.com/psf/black
+    rev: 22.10.0
     hooks:
-      - id: mdformat
-        args:
-          - --wrap=80
+      - id: black
+
+  - repo: https://github.com/pycqa/isort
+    rev: 5.10.1
+    hooks:
+      - id: isort
+        args: [--profile black]
 
   - repo: https://github.com/golangci/golangci-lint
     rev: v1.50.1
@@ -53,7 +57,6 @@ repos:
 
 exclude: |
   (?x)^(
-    CHANGELOG.md|
     swagger-ui\/.*
   )$
 

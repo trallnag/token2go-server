@@ -1,5 +1,5 @@
 
-name: codeql
+name: CodeQL
 
 #
 # Scan code with CodeQL on a scheduled basis.
@@ -11,11 +11,12 @@ name: codeql
 on:
   workflow_dispatch:
   schedule:
+    # At 06:01 on day-of-month 8.
     - cron: 1 6 8 * *
 
 jobs:
   codeql:
-    name: codeql
+    name: CodeQL
     strategy:
       fail-fast: false
       matrix:
