@@ -5,7 +5,7 @@ ARG TARGETARCH
 
 WORKDIR /app
 
-COPY dist/token2go-server-${TARGETOS}-${TARGETARCH} /app/token2go-server
+COPY dist/*-${TARGETOS}-${TARGETARCH}/token2go-server* /app/token2go-server
 
 EXPOSE 8080
 

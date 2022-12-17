@@ -97,9 +97,6 @@ for pf in platforms:
 
     subprocess.run(["go", "build", "-o", bin_path, "-ldflags", ldflags], env=os.environ)
 
-    # Copy bin to make Docker easier.
-    shutil.copy(bin_path, join(dist_dir, f"{name}-{pf.os}-{pf.arch}"))
-
     # Include other files.
     if isfile("LICENSE"):
         shutil.copy("LICENSE", odir_path)
@@ -121,9 +118,6 @@ for pf in platforms:
             for root, dirs, files in os.walk(odir_path):
                 for f in files:
                     archive.add(join(root, f), arcname=basename(f))
-
-    # Delete output directory. Not required from here.
-    shutil.rmtree(odir_path)
 
     # Add sha256sum type of checksum string to txt file.
     with open(join(dist_dir, "sha256sums.txt"), "a") as f:
