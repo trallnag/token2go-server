@@ -50,7 +50,7 @@ Check workflow runs in GitHub Actions and ensure everything is fine. Now push
 the tag itself.
 
 ```
-git push --tags
+git push v$VERSION
 ```
 
 This triggers the release workflow which will build binaries, build and push
