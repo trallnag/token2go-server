@@ -72,7 +72,7 @@ for pf in platforms:
     # Output for platform is placed here.
     odir_name = name
     odir_name += f"-{version}" if version else ""
-    odir_name += f".{pf.os}-{pf.arch}"
+    odir_name += f"-{pf.os}-{pf.arch}"
 
     # Relative path to platform output dir.
     odir_path = join(dist_dir, odir_name)
