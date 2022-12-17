@@ -31,7 +31,7 @@ git log --show-signature -1
 Tag the commit with an annotated and signed tag.
 
 ```
-git tag -s v$VERSION -m "v$VERSION"
+git tag -s v$VERSION -m ""
 ```
 
 Ensure that the tag is signed.
