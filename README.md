@@ -75,7 +75,11 @@ flow.
 
 ## Getting Started
 
-Tbd.
+Deploy the server behind some sort of gateway or reverse proxy that handles
+AuthN / AuthZ and adds the token to the request's headers before forwarding.
+
+Either build Token2go yourself, use the provided binaries attached to individual
+releases, or use the provided container images hosted on Docker Hub.
 
 ## Configuration
 
