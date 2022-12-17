@@ -102,8 +102,6 @@ for pf in platforms:
         shutil.copy("LICENSE", odir_path)
     if isfile("CHANGELOG.md"):
         shutil.copy("CHANGELOG.md", odir_path)
-    if isfile("README.md"):
-        shutil.copy("README.md", odir_path)
 
     # Archive contents of output directory.
     if pf.os == "windows":
