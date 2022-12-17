@@ -37,7 +37,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Extract release version
-        run: echo "VERSION=${GITHUB_REF#refs/*/}" | cut -c2- >> $GITHUB_ENV
+        run: echo "VERSION=${GITHUB_REF#refs/*/}" | sed 's/N=v/N=/g' >> $GITHUB_ENV
 
       - name: Extract release notes
         run: task extract-notes
