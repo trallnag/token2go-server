@@ -270,3 +270,12 @@ func TestEncryptWithRSA_ErrForbiddenKeySize(t *testing.T) {
 		})
 	}
 }
+
+// TestAESKeySizeError tests AESKeySizeError.
+func TestAESKeySizeError(t *testing.T) {
+	err := AESKeySizeError{5}
+	errMsg := err.Error()
+	if !strings.Contains(errMsg, "5") {
+		t.Errorf("Must contain 5.")
+	}
+}
