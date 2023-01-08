@@ -91,6 +91,7 @@ func TestGetEchoHandler(t *testing.T) {
 	rr := httptest.NewRecorder()
 	handler.ServeHTTP(rr, request)
 	rrr := rr.Result()
+	defer rrr.Body.Close()
 
 	if rrr.StatusCode != 200 {
 		t.Errorf("Wrong status code: got %v, want 200", rrr.StatusCode)
@@ -129,6 +130,7 @@ func TestGetHealthHandler(t *testing.T) {
 	rr := httptest.NewRecorder()
 	handler.ServeHTTP(rr, request)
 	rrr := rr.Result()
+	defer rrr.Body.Close()
 
 	if status := rrr.StatusCode; status != 200 {
 		t.Errorf("Wrong status code: got %v want %v", status, 200)
@@ -191,6 +193,7 @@ func TestMakeGetTokenHandler(t *testing.T) {
 			rr := httptest.NewRecorder()
 			handler.ServeHTTP(rr, request)
 			rrr := rr.Result()
+			defer rrr.Body.Close()
 
 			if rrr.StatusCode != tc.expectedCode {
 				t.Errorf(
@@ -260,6 +263,7 @@ func TestMakeGetTokenRedirectFlowHandler(t *testing.T) {
 			rr := httptest.NewRecorder()
 			handler.ServeHTTP(rr, request)
 			rrr := rr.Result()
+			defer rrr.Body.Close()
 
 			if rrr.StatusCode != tc.expectedCode {
 				t.Errorf(
@@ -297,6 +301,8 @@ func TestServeStatic(t *testing.T) {
 		resp, err := client.Get(server.URL + k)
 		if err != nil {
 			t.Fatalf("Unexpected error performing GET from server: %v", err)
+		} else {
+			defer resp.Body.Close()
 		}
 		if status := resp.StatusCode; status != http.StatusOK {
 			t.Errorf("Returned wrong status code: got %v want %v",

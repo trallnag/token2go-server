@@ -179,6 +179,8 @@ func TestIsSucceededEncryptWithRSA(t *testing.T) {
 			rr := httptest.NewRecorder()
 			result := IsSucceededEncryptWithRSA(rr, tc.err)
 			rrr := rr.Result()
+			defer rrr.Body.Close()
+
 			if result != tc.expectedResult {
 				t.Errorf("Wrong result: got %v, want %v", result, tc.expectedResult)
 			}
