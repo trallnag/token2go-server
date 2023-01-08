@@ -1,6 +1,12 @@
+![status](https://img.shields.io/badge/status-active-brightgreen)
+[![build](https://img.shields.io/github/actions/workflow/status/trallnag/token2go-server/ci.yaml?branch=master)](https://github.com/trallnag/token2go-server/actions)
+[![codecov](https://codecov.io/gh/trallnag/token2go-server/branch/master/graph/badge.svg?token=YB5AMNQL6L)](https://codecov.io/gh/trallnag/token2go-server)
+[![release](https://img.shields.io/github/v/release/trallnag/token2go-server)](https://github.com/trallnag/token2go-server/releases)
+[![docker pulls](https://img.shields.io/docker/pulls/trallnag/token2go-server)](https://hub.docker.com/r/trallnag/token2go-server)
+
 # Token2go Server
 
-The Token2go server is an Augmentation to existing auth schemas that provides
+The Token2go server is an augmentation to existing auth schemas that provides
 users direct and easy access to tokens and secrets in general. In that regard it
 acts as an escape hatch.
 
@@ -183,3 +189,9 @@ Here is how it's supposed to be used and how it works in general:
 For more information please refer to the OpenAPI specification. For example via
 the `/swagger-ui` endpoint or the schema file
 [`static/swagger.yaml`](static/swagger.yaml) itself.
+
+## Links
+
+- CodeCov: https://app.codecov.io/gh/trallnag/token2go-server
+- Docker Hub: https://hub.docker.com/r/trallnag/token2go-server
+- Pre-commit: https://results.pre-commit.ci/repo/github/534984617
