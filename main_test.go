@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"html/template"
 	"io"
 	"io/fs"
@@ -56,7 +57,7 @@ func TestUsageOfExLibs(t *testing.T) {
 		if !d.IsDir() && strings.HasSuffix(d.Name(), ".html") {
 			fileContent, err := fs.ReadFile(content, path)
 			if err != nil {
-				return err
+				return fmt.Errorf("failed reading file: %w", err)
 			}
 
 			sb.Write(fileContent)
@@ -308,7 +309,7 @@ func TestServeStatic(t *testing.T) {
 	}
 
 	for k, v := range m {
-		resp, err := client.Get(server.URL + k)
+		resp, err := client.Get(server.URL + k) //nolint
 		if err != nil {
 			t.Fatalf("Unexpected error performing GET from server: %v", err)
 		} else {

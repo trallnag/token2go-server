@@ -21,7 +21,7 @@ func GenRandBytes(n int) ([]byte, error) {
 
 	_, err := rand.Read(b)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to generate random bytes: %w", err)
 	}
 
 	return b, nil
@@ -49,17 +49,17 @@ func EncryptWithAES(
 
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, fmt.Errorf("failed to create new cipher: %w", err)
 	}
 
 	nonce = make([]byte, 12)
 	if _, err := io.ReadFull(rand.Reader, nonce); err != nil {
-		return nil, nil, err
+		return nil, nil, fmt.Errorf("failed to create nonce: %w", err)
 	}
 
 	aesgcm, err := cipher.NewGCM(block)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, fmt.Errorf("failed to create aesgcm: %w", err)
 	}
 
 	return aesgcm.Seal(nil, nonce, plaintext, nil), nonce, nil
