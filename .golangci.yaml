@@ -1,0 +1,57 @@
+run:
+  timeout: 5m
+
+linters-settings:
+  cyclop:
+    max-complexity: 20
+  gocyclo:
+    min-complexity: 20
+
+linters:
+  disable-all: true
+  enable:
+    # Enabled by default.
+    - errcheck
+    - gosimple
+    - govet
+    - ineffassign
+    - staticcheck
+    - typecheck
+    - unused
+    # Disabled by default.
+    - asasalint
+    - asciicheck
+    - bidichk
+    - bodyclose
+    - containedctx
+    - contextcheck
+    - cyclop
+    - decorder
+    - dupl
+    - durationcheck
+    - errchkjson
+    - errname
+    - errorlint
+    - execinquery
+    - exhaustive
+    - exportloopref
+    - forbidigo
+    - gochecknoglobals
+    - gochecknoinits
+    - gocyclo
+    - gosec
+    - lll
+    - maintidx
+    - makezero
+    - nilerr
+    - nilnil
+    - noctx
+    - nolintlint
+    - predeclared
+    - promlinter
+    - tagliatelle
+    - tenv
+    - thelper
+    - tparallel
+    - unconvert
+    - wrapcheck
