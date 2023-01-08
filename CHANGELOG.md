@@ -7,6 +7,10 @@ and adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0),
 
 ## Unreleased
 
+Nothing.
+
+## [1.0.1](https://github.com/trallnag/token2go-server/compare/v1.0.0...v1.0.1) / 2023-01-08
+
 ### Security
 
 - Added a timeout of 3 seconds to HTTP server
