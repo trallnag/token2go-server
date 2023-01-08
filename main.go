@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -28,9 +29,9 @@ func main() {
 
 	c := NewConfig()
 
-	err := http.ListenAndServe(
-		fmt.Sprintf(":"+c.serverPort),
-		initRouter(
+	server := &http.Server{Addr: ":" + c.serverPort,
+		ReadHeaderTimeout: 3 * time.Second,
+		Handler: initRouter(
 			c.fallbackToken,
 			c.tokenHeaderNames,
 			c.addTokenHeaderNames,
@@ -42,7 +43,9 @@ func main() {
 				c.uiMisc,
 			),
 		),
-	)
+	}
+
+	err := server.ListenAndServe()
 	if err != nil {
 		panic(err)
 	}
