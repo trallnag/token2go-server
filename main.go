@@ -24,7 +24,7 @@ var version = ""
 var content embed.FS
 
 func main() {
-	fmt.Println("token2go-server", version)
+	fmt.Println("token2go-server", version) //nolint
 
 	c := NewConfig()
 
