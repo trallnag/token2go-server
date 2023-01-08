@@ -44,27 +44,15 @@ func TestNewConfig_Default(t *testing.T) {
 }
 
 func TestNewConfig_Custom(t *testing.T) {
-	os.Setenv("T2G_FALLBACK_TOKEN", "x")
-	os.Setenv("T2G_SERVER_PORT", "x")
-	os.Setenv("T2G_TOKEN_HEADER_NAMES", "x")
-	os.Setenv("T2G_ADD_TOKEN_HEADER_NAMES", "x")
-	os.Setenv("T2G_UI_TARGET", "x")
-	os.Setenv("T2G_UI_TITLE", "x")
-	os.Setenv("T2G_UI_DESC1", "x")
-	os.Setenv("T2G_UI_DESC2", "x")
-	os.Setenv("T2G_UI_MISC", "x")
-
-	defer func() {
-		os.Unsetenv("T2G_FALLBACK_TOKEN")
-		os.Unsetenv("T2G_SERVER_PORT")
-		os.Unsetenv("T2G_TOKEN_HEADER_NAMES")
-		os.Unsetenv("T2G_ADD_TOKEN_HEADER_NAMES")
-		os.Unsetenv("T2G_UI_TARGET")
-		os.Unsetenv("T2G_UI_TITLE")
-		os.Unsetenv("T2G_UI_DESC1")
-		os.Unsetenv("T2G_UI_DESC2")
-		os.Unsetenv("T2G_UI_MISC")
-	}()
+	t.Setenv("T2G_FALLBACK_TOKEN", "x")
+	t.Setenv("T2G_SERVER_PORT", "x")
+	t.Setenv("T2G_TOKEN_HEADER_NAMES", "x")
+	t.Setenv("T2G_ADD_TOKEN_HEADER_NAMES", "x")
+	t.Setenv("T2G_UI_TARGET", "x")
+	t.Setenv("T2G_UI_TITLE", "x")
+	t.Setenv("T2G_UI_DESC1", "x")
+	t.Setenv("T2G_UI_DESC2", "x")
+	t.Setenv("T2G_UI_MISC", "x")
 
 	c := NewConfig()
 
@@ -89,8 +77,7 @@ func TestNewConfig_Custom(t *testing.T) {
 }
 
 func TestGetEnv(t *testing.T) {
-	os.Setenv("T2G_FOO", "bar")
-	defer os.Unsetenv("T2G_FOO")
+	t.Setenv("T2G_FOO", "bar")
 
 	got := GetEnv("FOO", "alice")
 	want := "bar"
