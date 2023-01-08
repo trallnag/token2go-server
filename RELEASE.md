@@ -40,7 +40,7 @@ Ensure that the tag is signed.
 git show v$VERSION
 ```
 
-Push changes, but not the commit.
+Push changes, but not the tag.
 
 ```
 git push
@@ -50,7 +50,7 @@ Check workflow runs in GitHub Actions and ensure everything is fine. Now push
 the tag itself.
 
 ```
-git push v$VERSION
+git push origin v$VERSION
 ```
 
 This triggers the release workflow which will build binaries, build and push
