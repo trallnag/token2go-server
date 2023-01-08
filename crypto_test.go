@@ -70,7 +70,7 @@ func TestEncryptWithAES(t *testing.T) {
 				t.Fatalf("Unexpected error: %v", err)
 			}
 
-			block, err := aes.NewCipher([]byte(tc.key))
+			block, err := aes.NewCipher(tc.key)
 			if err != nil {
 				t.Errorf("Unexpected error: %v", err)
 			}
