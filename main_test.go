@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"html/template"
 	"io"
 	"io/fs"
@@ -80,7 +81,7 @@ func TestUsageOfExLibs(t *testing.T) {
 func TestGetEchoHandler(t *testing.T) {
 	handler := http.HandlerFunc(GetEchoHandler)
 
-	request, err := http.NewRequest("GET", "/echo?lol=lol", nil)
+	request, err := http.NewRequestWithContext(context.TODO(), "GET", "/echo?lol=lol", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -122,7 +123,7 @@ func TestGetEchoHandler(t *testing.T) {
 func TestGetHealthHandler(t *testing.T) {
 	handler := http.HandlerFunc(GetHealthHandler)
 
-	request, err := http.NewRequest("GET", "/health", nil)
+	request, err := http.NewRequestWithContext(context.TODO(), "GET", "/health", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -183,7 +184,7 @@ func TestMakeGetTokenHandler(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			handler := MakeGetTokenHandler(tc.tokenHeaderNames, tc.fallbackToken)
 
-			request, err := http.NewRequest("GET", "/health", nil)
+			request, err := http.NewRequestWithContext(context.TODO(), "GET", "/health", nil)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -251,7 +252,7 @@ func TestMakeGetTokenRedirectFlowHandler(t *testing.T) {
 				tc.tokenHeaderNames, tc.fallbackToken,
 			)
 
-			request, err := http.NewRequest(
+			request, err := http.NewRequestWithContext(context.TODO(),
 				"GET", "/flows/redirect/token?"+tc.queryParams.Encode(), nil,
 			)
 			if err != nil {
