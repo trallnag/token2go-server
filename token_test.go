@@ -46,7 +46,8 @@ func TestExtractToken(t *testing.T) {
 		name: "1_case_sensitive",
 		headers: http.Header{
 			"Baz":   {"c"},
-			"Token": {"d"}},
+			"Token": {"d"},
+		},
 		tokenHeaderNames: []string{"foo", "bar", "baz"},
 		fallbackToken:    "",
 		expectedSecret:   "",
@@ -56,7 +57,8 @@ func TestExtractToken(t *testing.T) {
 		headers: http.Header{
 			"Baz":   {"c"},
 			"token": {"d"},
-			"Token": {}},
+			"Token": {},
+		},
 		tokenHeaderNames: []string{"Token"},
 		fallbackToken:    "",
 		expectedSecret:   "",
@@ -66,7 +68,8 @@ func TestExtractToken(t *testing.T) {
 		headers: http.Header{
 			"A": {"a"},
 			"C": {"c"},
-			"B": {"b"}},
+			"B": {"b"},
+		},
 		tokenHeaderNames: []string{"X", "B", "C"},
 		fallbackToken:    "",
 		expectedSecret:   "b",
@@ -76,7 +79,8 @@ func TestExtractToken(t *testing.T) {
 		headers: http.Header{
 			"x": {"a"},
 			"y": {},
-			"z": {"c"}},
+			"z": {"c"},
+		},
 		tokenHeaderNames: []string{"X", "Y", "Z"},
 		fallbackToken:    "Foobar",
 		expectedSecret:   "Foobar",
@@ -86,7 +90,8 @@ func TestExtractToken(t *testing.T) {
 		headers: http.Header{
 			"x": {"a"},
 			"y": {},
-			"z": {"Bearer secret"}},
+			"z": {"Bearer secret"},
+		},
 		tokenHeaderNames: []string{"z"},
 		fallbackToken:    "",
 		expectedSecret:   "secret",

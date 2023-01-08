@@ -174,7 +174,6 @@ func TestIsSucceededEncryptWithRSA(t *testing.T) {
 		expectedCode:   500,
 		expectedResult: false,
 	}} {
-
 		t.Run(tc.name, func(t *testing.T) {
 			rr := httptest.NewRecorder()
 			result := IsSucceededEncryptWithRSA(rr, tc.err)
@@ -193,7 +192,11 @@ func TestIsSucceededEncryptWithRSA(t *testing.T) {
 				t.Fatalf("Unexpected error while reading body: %v", err)
 			}
 			if !strings.Contains(string(b), tc.substr) {
-				t.Errorf("Didn't find substr in body: got %q, want %q", string(b), tc.substr)
+				t.Errorf(
+					"Didn't find substr in body: got %q, want %q",
+					string(b),
+					tc.substr,
+				)
 			}
 		})
 	}

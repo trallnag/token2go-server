@@ -88,7 +88,11 @@ func TestEncryptWithAES(t *testing.T) {
 			got := hex.EncodeToString(plaintext)
 			want := hex.EncodeToString(tc.plaintext)
 			if got != want {
-				t.Errorf("Decrypted encoded plaintext does not match input: got %q, want %q", got, want)
+				t.Errorf(
+					"Decrypted encoded plaintext does not match input: got %q, want %q",
+					got,
+					want,
+				)
 			}
 		})
 	}

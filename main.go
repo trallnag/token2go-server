@@ -29,7 +29,8 @@ func main() {
 
 	c := NewConfig()
 
-	server := &http.Server{Addr: ":" + c.serverPort,
+	server := &http.Server{
+		Addr:              ":" + c.serverPort,
 		ReadHeaderTimeout: 3 * time.Second,
 		Handler: initRouter(
 			c.fallbackToken,
@@ -112,7 +113,6 @@ func GetEchoHandler(w http.ResponseWriter, r *http.Request) {
 		r.Header,
 		r.RemoteAddr,
 	})
-
 	if err != nil {
 		panic(err)
 	}
@@ -325,13 +325,19 @@ func NewIndexTmplData(
 
 	if len(uiTarget) > 0 {
 		x := fmt.Sprintf("Get a token for %s with the Token2go service", uiTarget)
-		d.Desc1 = template.HTML(x) //#nosec G203 -- Accepted risk. Data is only provided on startup as config.
+		d.Desc1 = template.HTML(
+			x,
+		) //#nosec G203 -- Accepted risk. Data is only provided on startup as config.
 	} else {
 		d.Desc1 = template.HTML("Go ahead and grab a token with the Token2go service")
 	}
 
-	d.Desc2 = template.HTML(uiDesc2) //#nosec G203 -- Accepted risk. Data is only provided on startup as config.
-	d.Misc = template.HTML(uiMisc)   //#nosec G203 -- Accepted risk. Data is only provided on startup as config.
+	d.Desc2 = template.HTML(
+		uiDesc2,
+	) //#nosec G203 -- Accepted risk. Data is only provided on startup as config.
+	d.Misc = template.HTML(
+		uiMisc,
+	) //#nosec G203 -- Accepted risk. Data is only provided on startup as config.
 
 	return d
 }

@@ -38,7 +38,10 @@ func (e *AESKeySizeError) Error() string {
 // EncryptWithAES encrypts plaintext with key using AES-GCM. Returns ciphertext
 // and nonce. AESKeyLengthError is returned if key is not 32 bytes. All other
 // errors are bubbled up without wrapping.
-func EncryptWithAES(key []byte, plaintext []byte) (ciphertext []byte, nonce []byte, err error) {
+func EncryptWithAES(
+	key []byte,
+	plaintext []byte,
+) (ciphertext []byte, nonce []byte, err error) {
 	keyLength := len(key)
 	if keyLength != 32 {
 		return nil, nil, &AESKeySizeError{keyLength}

@@ -81,7 +81,12 @@ func TestUsageOfExLibs(t *testing.T) {
 func TestGetEchoHandler(t *testing.T) {
 	handler := http.HandlerFunc(GetEchoHandler)
 
-	request, err := http.NewRequestWithContext(context.TODO(), "GET", "/echo?lol=lol", nil)
+	request, err := http.NewRequestWithContext(
+		context.TODO(),
+		"GET",
+		"/echo?lol=lol",
+		nil,
+	)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -184,7 +189,12 @@ func TestMakeGetTokenHandler(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			handler := MakeGetTokenHandler(tc.tokenHeaderNames, tc.fallbackToken)
 
-			request, err := http.NewRequestWithContext(context.TODO(), "GET", "/health", nil)
+			request, err := http.NewRequestWithContext(
+				context.TODO(),
+				"GET",
+				"/health",
+				nil,
+			)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -222,7 +232,6 @@ func TestMakeGetTokenHandler(t *testing.T) {
 
 func TestMakeGetTokenRedirectFlowHandler(t *testing.T) {
 	aPublic1, err := os.ReadFile("testdata/a-public-key-rsa2048-rfc5280-x509.pem")
-
 	if err != nil {
 		t.Fatal(err)
 	}
