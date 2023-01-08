@@ -6,6 +6,17 @@ vars:
   OCI_REG: "{{ default `docker.io/trallnag` .OCI_REG }}"
 
 tasks:
+  lint:
+    desc: Lint code.
+    cmds:
+      - gofmt -w .
+      - golangci-lint run
+
+  test:
+    desc: Test code.
+    cmds:
+      - go test -race -covermode=atomic -coverprofile=coverage.out
+
   build-dist:
     desc: Build distribution for multiple platforms.
     cmds:
@@ -25,11 +36,9 @@ tasks:
       - >-
         docker buildx build --push
         --platform linux/amd64,linux/arm64
+        --tag={{ .OCI_REG }}/{{ .APP_NAME }}:{{ .VERSION }}
         {{ if .LATEST -}}
         --tag={{ .OCI_REG }}/{{ .APP_NAME }}:latest
-        {{ end -}}
-        {{ if .VERSION -}}
-        --tag={{ .OCI_REG }}/{{ .APP_NAME }}:{{ .VERSION }}
         {{ end -}}
         .
     vars:
