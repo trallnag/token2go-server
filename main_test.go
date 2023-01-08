@@ -138,7 +138,17 @@ func TestGetEchoHandler(t *testing.T) {
 	rr = httptest.NewRecorder()
 	handler.ServeHTTP(rr, request)
 	rrr = rr.Result()
+	b, err = io.ReadAll(rrr.Body)
+	if err != nil {
+		t.Fatalf("Unexpected error while reading body: %v", err)
+	}
 	defer rrr.Body.Close()
+	body = string(b)
+
+	want = "\"pretty\": [\n"
+	if !strings.Contains(body, want) {
+		t.Errorf("Did not find '%v' in '%v'", want, body)
+	}
 }
 
 func TestGetHealthHandler(t *testing.T) {
