@@ -325,13 +325,13 @@ func NewIndexTmplData(
 
 	if len(uiTarget) > 0 {
 		x := fmt.Sprintf("Get a token for %s with the Token2go service", uiTarget)
-		d.Desc1 = template.HTML(x)
+		d.Desc1 = template.HTML(x) //#nosec G203 -- Accepted risk. Data is only provided on startup as config.
 	} else {
 		d.Desc1 = template.HTML("Go ahead and grab a token with the Token2go service")
 	}
 
-	d.Desc2 = template.HTML(uiDesc2)
-	d.Misc = template.HTML(uiMisc)
+	d.Desc2 = template.HTML(uiDesc2) //#nosec G203 -- Accepted risk. Data is only provided on startup as config.
+	d.Misc = template.HTML(uiMisc)   //#nosec G203 -- Accepted risk. Data is only provided on startup as config.
 
 	return d
 }
