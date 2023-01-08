@@ -93,7 +93,7 @@ for pf in platforms:
 
     ldflags = "-s -w"
     if version:
-        ldflags += f" -X 'main.Version={version}'"
+        ldflags += f" -X 'main.version={version}'"
 
     subprocess.run(["go", "build", "-o", bin_path, "-ldflags", ldflags], env=os.environ)
 

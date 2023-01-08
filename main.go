@@ -16,7 +16,7 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 )
 
-var Version = ""
+var version = ""
 
 //go:embed all:static
 //go:embed all:swagger-ui
@@ -24,7 +24,7 @@ var Version = ""
 var content embed.FS
 
 func main() {
-	fmt.Println("token2go-server", Version)
+	fmt.Println("token2go-server", version)
 
 	c := NewConfig()
 
