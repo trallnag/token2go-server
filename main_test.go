@@ -124,6 +124,21 @@ func TestGetEchoHandler(t *testing.T) {
 	if !strings.Contains(body, want) {
 		t.Errorf("Did not find '%v' in '%v'", want, body)
 	}
+
+	request, err = http.NewRequestWithContext(
+		context.TODO(),
+		"GET",
+		"/echo?pretty",
+		nil,
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr = httptest.NewRecorder()
+	handler.ServeHTTP(rr, request)
+	rrr = rr.Result()
+	defer rrr.Body.Close()
 }
 
 func TestGetHealthHandler(t *testing.T) {
