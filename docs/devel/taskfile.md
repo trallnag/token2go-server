@@ -12,7 +12,9 @@ Actions.
 
 I can recommend installing Task with Homebrew.
 
-    brew install go-task/tap/go-task
+```
+brew install go-task/tap/go-task
+```
 
 Task is configured via [`Taskfile.yaml`](../../Taskfile.yaml).
 
@@ -24,12 +26,18 @@ just called from Task.
 
 List tasks.
 
-    task --list
+```
+task --list
+```
 
 Run task.
 
-    task update-swagger
+```
+task update-swagger
+```
 
 Run task and set variable.
 
-    task update-swagger VERSION=4.15.5
+```
+task update-swagger VERSION=4.15.5
+```
