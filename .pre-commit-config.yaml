@@ -44,6 +44,11 @@ repos:
     hooks:
       - id: golangci-lint
 
+exclude: |
+  (?x)^(
+    swagger-ui\/.*
+  )$
+
 ci:
   skip:
     - golangci-lint
