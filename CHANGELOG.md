@@ -11,7 +11,7 @@ Nothing.
 
 ## [1.0.1](https://github.com/trallnag/token2go-server/compare/v1.0.0...v1.0.1) / 2023-01-08
 
-### Security
+### Changed
 
 - Added a timeout of 3 seconds to HTTP server
   ([GO-S2114](https://deepsource.io/directory/analyzers/go/issues/GO-S2114),
