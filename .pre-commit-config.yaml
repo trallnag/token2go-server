@@ -17,18 +17,18 @@ repos:
         additional_dependencies: ["@commitlint/config-conventional"]
 
   - repo: https://github.com/psf/black
-    rev: 22.12.0
+    rev: "23.1.0"
     hooks:
       - id: black
 
   - repo: https://github.com/pycqa/isort
-    rev: 5.11.4
+    rev: "5.12.0"
     hooks:
       - id: isort
         args: [--profile black]
 
   - repo: https://github.com/executablebooks/mdformat
-    rev: 0.7.16
+    rev: "0.7.16"
     hooks:
       - id: mdformat
         args: [--wrap=80]
@@ -40,7 +40,7 @@ repos:
         types_or: [json, yaml]
 
   - repo: https://github.com/golangci/golangci-lint
-    rev: v1.50.1
+    rev: v1.51.0
     hooks:
       - id: golangci-lint
 
@@ -51,12 +51,14 @@ exclude: |
 
 ci:
   skip:
+    # Why is golangci-lint being skipped? It is already run as part of the
+    # lint job in the general ci workflow. So we can spare the effort here.
     - golangci-lint
   autofix_commit_msg: |
-    ci(pre-commit): Auto fixes from hooks
+    ci(pre-commit): Apply hook auto fixes
 
     For more information, see <https://pre-commit.com> and <https://pre-commit.ci>.
   autoupdate_commit_msg: |
-    ci(pre-commit): Auto update hook revs
+    ci(pre-commit): Apply hook rev updates
 
     For more information, see <https://pre-commit.com> and <https://pre-commit.ci>.
