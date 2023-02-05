@@ -1,10 +1,10 @@
 name: CodeQL
 
 #
-# Scan code with CodeQL on a scheduled basis.
+# Scans code with CodeQL on a scheduled basis.
 #
-# - <https://codeql.github.com/>
-# - <https://github.com/github/codeql-action>
+# - https://codeql.github.com
+# - https://github.com/github/codeql-action
 #
 
 on:
