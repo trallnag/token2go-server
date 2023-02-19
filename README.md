@@ -1,10 +1,10 @@
-![status](https://img.shields.io/badge/status-active-brightgreen)
+[![status](https://img.shields.io/badge/status-active-brightgreen)](#project-status)
 [![build](https://img.shields.io/github/actions/workflow/status/trallnag/token2go-server/ci.yaml?branch=master)](https://github.com/trallnag/token2go-server/actions)
 [![codecov](https://codecov.io/gh/trallnag/token2go-server/branch/master/graph/badge.svg?token=YB5AMNQL6L)](https://codecov.io/gh/trallnag/token2go-server)
 [![release](https://img.shields.io/github/v/release/trallnag/token2go-server)](https://github.com/trallnag/token2go-server/releases)
 [![docker pulls](https://img.shields.io/docker/pulls/trallnag/token2go-server)](https://hub.docker.com/r/trallnag/token2go-server)
 
-# Token2go Server
+# Token2go Server <!-- omit from toc -->
 
 The Token2go server is an augmentation to existing auth schemas that provides
 users direct and easy access to tokens and secrets in general. In that regard it
@@ -14,7 +14,7 @@ It is aimed at scenarios where users want to work directly and interactively
 with protected APIs that do not support static secrets or advanced flows like
 the OAuth 2.0 device code grant.
 
-For end users, Token2go client libaries (small pieces of code that implement
+For end users, Token2go client libraries (small pieces of code that implement
 flows on the client-side) are probably more interesting than the Token2go server
 itself.
 
@@ -33,6 +33,19 @@ before forwarding it to Token2go.
 
 Remember to only provide token access to clients that can be trusted to handle
 tokens directly.
+
+## Table of Contents <!-- omit from toc -->
+
+- [Use Case Examples](#use-case-examples)
+  - [Retrieve OAuth 2.0 access token via web page](#retrieve-oauth-20-access-token-via-web-page)
+  - [Retrieve OAuth 2.0 access token programmatically](#retrieve-oauth-20-access-token-programmatically)
+- [Getting Started](#getting-started)
+- [Configuration](#configuration)
+- [API Endpoints](#api-endpoints)
+- [Token Redirect Flow](#token-redirect-flow)
+- [Project Status](#project-status)
+- [Licensing](#licensing)
+- [Links](#links)
 
 ## Use Case Examples
 
@@ -58,7 +71,7 @@ like directly copying the token into the user's clipboard.
 
 [Here is a video showcasing the web page and it's functionality](assets/2022-11-20-usecase-token-from-web-page.gif)
 
-### Retrieve OAuth 2.0 access token from programs
+### Retrieve OAuth 2.0 access token programmatically
 
 You have an app that provides access to data. The app is using OAuth 2.0 and
 OIDC. It includes a web interface using authorization code grant. Other apps are
@@ -76,7 +89,7 @@ One solution: Host the Token2go server. It provides an interface that can be
 used by programs that can act as a Token2go client. Your users use a small
 library in their interactive program. It leverages a local browser and a
 temporary local HTTP server to interact with the Token2go server. Tokens are
-redirected securly to the running program using the so called token redirect
+redirected securely to the running program using the so called token redirect
 flow.
 
 ## Getting Started
@@ -91,12 +104,12 @@ releases, or use the provided container images hosted on Docker Hub.
 
 The Token2go server is configured via environment variables.
 
-### General Core
+### General Core <!-- omit from toc -->
 
 - `T2G_SERVER_PORT`: Optional port for the server to listen on. Defaults to
   `8080`.
 
-### Token extraction
+### Token extraction <!-- omit from toc -->
 
 - `T2G_TOKEN_HEADER_NAMES`: Optional list of header names to look for when
   extracting tokens. List elements separated by commas. Defaults to
@@ -112,7 +125,7 @@ For Token2go to work correctly, `T2G_TOKEN_HEADER_NAMES` or
 `T2G_ADD_TOKEN_HEADER_NAMES` must contain the token header name used in your
 environment. Check with the `/echo` endpoint.
 
-### User Interface
+### User Interface <!-- omit from toc -->
 
 - `T2G_UI_TARGET`: Optional. Name of the product the Token2go server is used
   with.
@@ -130,18 +143,18 @@ Setting `T2G_UI_TARGET` should be enough.
 more comprehensive insights check out the Swagger UI and the flow-related
 documentation in this README.*
 
-### Core
+### Core <!-- omit from toc -->
 
 - `/`: Entrypoint to web page. Calls out to other embedded files.
 - `/token`: Get token as a JSON payload. Used by web page script.
 - `/swagger-ui`: API schema. Essential to understand and use flows.
 
-### Flows
+### Flows <!-- omit from toc -->
 
 - `/flow/redirect/token`: Perform the token redirect flow. Encrypted token is
   encoded into the redirect URL pointing at provided target.
 
-### Management
+### Management <!-- omit from toc -->
 
 - `/health`: Check health of Token2go server.
 - `/echo`: Get an echo of request headers, parameters, and more.
@@ -170,7 +183,7 @@ Here is how it's supposed to be used and how it works in general:
 
 1. Client setup.
    1. Start up temporary server on localhost.
-   1. Generate key pair according to requirments.
+   1. Generate key pair according to requirements.
    1. Bake input baked into URL query parameters.
    1. Open this endpoint in user's browser.
 1. Endpoint processing.
@@ -189,6 +202,18 @@ Here is how it's supposed to be used and how it works in general:
 For more information please refer to the OpenAPI specification. For example via
 the `/swagger-ui` endpoint or the schema file
 [`static/swagger.yaml`](static/swagger.yaml) itself.
+
+## Project Status
+
+The project is maintained by me, [trallnag](https://github.com/trallnag), and I
+am interested in keeping it alive as I am using it in production. I also don't
+mind developing it further as I like working with Go.
+
+Contributions are welcome, see [`CONTRIBUTING.md`](CONTRIBUTING.md) for more.
+
+## Licensing
+
+This project is licensed under the MIT License, see [`LICENSE`](LICENSE).
 
 ## Links
 
