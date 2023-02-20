@@ -7,7 +7,9 @@ and adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0),
 
 ## Unreleased
 
-Nothing.
+### Changed
+
+- Switched from MIT license to functionally equivalent ISC license.
 
 ## [1.0.1](https://github.com/trallnag/token2go-server/compare/v1.0.0...v1.0.1) / 2023-01-08
 
