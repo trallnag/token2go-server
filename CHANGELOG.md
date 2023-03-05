@@ -11,8 +11,10 @@ Nothing.
 
 ## [1.0.3](https://github.com/trallnag/token2go-server/compare/v1.0.2...v1.0.3) / 2023-03-05
 
+### Changed
+
 - Bumped minimum required Go version to 1.20. This affects release artifacts.
-- Switched from ISC License to Apache License (Apache-2.0).
+- Switched from ISC License (ISC) to Apache License (Apache-2.0).
 
 ## [1.0.2](https://github.com/trallnag/token2go-server/compare/v1.0.1...v1.0.2) / 2023-02-20
 
