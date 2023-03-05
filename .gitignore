@@ -1,14 +1,13 @@
 # ------------------------------------------------------------------------------
-# Project specific.
+# Entries specific to this repository.
 
 
-.vscode/
 dist/
 tmp/
 
 
 # ------------------------------------------------------------------------------
-# Generic from <https://github.com/github/gitignore/blob/main/Go.gitignore>.
+# Sourced from: https://github.com/github/gitignore/blob/main/Go.gitignore
 
 
 # If you prefer the allow list template instead of the deny list, see community template:
@@ -35,3 +34,18 @@ go.work
 
 
 # ------------------------------------------------------------------------------
+# Sourced from: https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore
+
+
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
