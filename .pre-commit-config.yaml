@@ -39,6 +39,11 @@ repos:
       - id: prettier
         types_or: [json, yaml]
 
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.7.0
+    hooks:
+      - id: markdownlint-cli2
+
   - repo: https://github.com/golangci/golangci-lint
     rev: v1.52.2
     hooks:
