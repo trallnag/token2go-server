@@ -5,9 +5,9 @@ This document describes the release process and is targeted at maintainers.
 ## Preparation
 
 Pick a name for the new release. It must follow
-[Semantic Versioning](https://semver.org). For example `1.2.0` or `5.10.7`.
+[Semantic Versioning](https://semver.org):
 
-```
+```shell
 VERSION=1.0.1
 ```
 
@@ -21,54 +21,55 @@ release to a new section with an appropriate title for the release. Should the
 
 ## Trigger
 
-Stage and commit the changes. Remember to sign the commit.
+Commit the changes. Make sure to sign the commit:
 
-```
+```shell
 git add CHANGELOG.md
 git commit -S -m "chore: Prepare release v$VERSION"
 git log --show-signature -1
 ```
 
-Tag the commit with an annotated and signed tag.
+Push changes:
 
+```shell
+git push origin master
 ```
+
+Check
+[workflow runs](https://github.com/trallnag/token2go-server/actions?query=branch%3Amaster)
+in GitHub Actions and ensure everything is fine.
+
+Tag the latest commit with an annotated and signed tag:
+
+```shell
 git tag -s v$VERSION -m ""
 git show v$VERSION
 ```
 
-Make sure that the tree looks good.
+Make sure that the tree looks good:
 
-```
+```shell
 git log --graph --oneline --all -n 5
 ```
 
-Push changes on the master branch.
+Push the tag itself:
 
-```
-git push origin master
-```
-
-Check workflow runs in GitHub Actions and ensure everything is fine.
-
-Now push the tag itself.
-
-```
+```shell
 git push origin v$VERSION
 ```
 
 This triggers the release workflow which will build binaries, build and push
-container images, and draft a GitHub release.
+container images, and draft a GitHub release. Monitor the
+[release workflow run](https://github.com/trallnag/token2go-server/actions/workflows/release.yaml).
 
 ## Wrap Up
 
-Ensure that the new set of images has been pushed to project's repository on
-Docker Hub
+Ensure that the new set of images has been pushed to the project's container
+image repository on Docker Hub
 [here](https://hub.docker.com/repository/docker/trallnag/token2go-server).
 
 Go to the release page of this project on GitHub
 [here](https://github.com/trallnag/token2go-server/releases) and review the
 automatically created release draft.
-
-Set the release title to `$VERSION / $DATE`. For example "1.0.0 / 2023-01-01".
 
 Publish the draft.

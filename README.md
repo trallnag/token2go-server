@@ -1,8 +1,7 @@
 [![status](https://img.shields.io/badge/status-active-brightgreen)](#project-status)
-[![build](https://img.shields.io/github/actions/workflow/status/trallnag/token2go-server/ci.yaml?branch=master)](https://github.com/trallnag/token2go-server/actions)
-[![codecov](https://codecov.io/gh/trallnag/token2go-server/branch/master/graph/badge.svg?token=YB5AMNQL6L)](https://codecov.io/gh/trallnag/token2go-server)
 [![release](https://img.shields.io/github/v/release/trallnag/token2go-server)](https://github.com/trallnag/token2go-server/releases)
 [![docker pulls](https://img.shields.io/docker/pulls/trallnag/token2go-server)](https://hub.docker.com/r/trallnag/token2go-server)
+[![codecov](https://codecov.io/gh/trallnag/token2go-server/branch/master/graph/badge.svg?token=YB5AMNQL6L)](https://codecov.io/gh/trallnag/token2go-server)
 
 # Token2go Server <!-- omit from toc -->
 
@@ -223,6 +222,9 @@ legal notices and information.
 
 ## Links
 
-- CodeCov: https://app.codecov.io/gh/trallnag/token2go-server
-- Docker Hub: https://hub.docker.com/r/trallnag/token2go-server
-- Pre-commit: https://results.pre-commit.ci/repo/github/534984617
+- Docker Hub:
+  [hub.docker.com/r/trallnag/token2go-server](https://hub.docker.com/r/trallnag/token2go-server)
+- CodeCov:
+  [app.codecov.io/gh/trallnag/token2go-server](https://app.codecov.io/gh/trallnag/token2go-server)
+- Pre-commit CI:
+  [results.pre-commit.ci/repo/github/534984617](https://results.pre-commit.ci/repo/github/534984617)
