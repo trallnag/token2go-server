@@ -204,9 +204,8 @@ the `/swagger-ui` endpoint or the schema file
 
 ## Project Status
 
-The project is maintained by me, [trallnag](https://github.com/trallnag), and I
-am interested in keeping it alive as I am using it in production. I also don't
-mind developing it further as I like working with Go.
+The project is maintained by [trallnag](https://github.com/trallnag). Not used
+in production. The server is more or less done, but there are no clients yet.
 
 Contributions are welcome, see [`CONTRIBUTING.md`](CONTRIBUTING.md) for more.
 
